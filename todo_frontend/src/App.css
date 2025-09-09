@@ -1,104 +1,236 @@
 /* CSS Variables for Theme Management */
 :root {
-  /* Light theme colors */
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
+  --text-primary: #222222;
+  --text-secondary: #4a5568;
+  --border-color: #e5e7eb;
+  --button-bg: #2563eb;
   --button-text: #ffffff;
+  --danger: #dc2626;
+  --muted: #9ca3af;
 }
 
 [data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
+  --bg-primary: #0f1115;
+  --bg-secondary: #171923;
+  --text-primary: #f7fafc;
+  --text-secondary: #a0aec0;
+  --border-color: #2d3748;
+  --button-bg: #3b82f6;
   --button-text: #ffffff;
+  --danger: #ef4444;
+  --muted: #94a3b8;
 }
 
+/* Base layout */
 .App {
-  text-align: center;
+  min-height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color .2s ease, color .2s ease;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 12px;
+  justify-content: space-between;
+  padding: 12px 0 20px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.toolbar-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Buttons */
+.btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
   color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.App-link {
+.btn.primary {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border-color: var(--button-bg);
+}
+.btn.small { padding: 4px 8px; font-size: 12px; }
+.btn.ghost { background: transparent; }
+.btn.danger { border-color: var(--danger); color: var(--danger); }
+.btn.active { box-shadow: inset 0 0 0 2px var(--button-bg); }
+
+/* Forms */
+.filters, .todo-form, .sort-control {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.filters label, .todo-form label, .sort-control label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   color: var(--text-secondary);
-  transition: color 0.3s ease;
+  font-size: 14px;
 }
 
+.filters input[type="search"], .todo-form input, .todo-form textarea, select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.filters .grow, .todo-form .grow { flex: 1; }
+.todo-form .row { display: flex; gap: 12px; }
+.todo-form .actions { margin-top: 8px; display: flex; gap: 8px; }
+.error { color: var(--danger); font-size: 12px; }
+
+/* Bulk actions bar */
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.bulk-actions .spacer { flex: 1; }
+
+/* List */
+.todo-list {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.todo-row {
+  display: grid;
+  grid-template-columns: 48px 1fr 140px 120px 120px 220px;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+.todo-row.head {
+  background: var(--bg-secondary);
+  font-weight: 600;
+}
+.todo-row .cell.muted,
+.muted { color: var(--muted); }
+.strike { text-decoration: line-through; }
+
+/* Kanban */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.kanban-col {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  padding: 8px;
+}
+.kanban-cards { display: flex; flex-direction: column; gap: 8px; }
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  padding: 8px;
+}
+.card-title { font-weight: 600; margin-bottom: 6px; }
+.card-desc { color: var(--text-secondary); margin: 6px 0 8px; }
+.card-actions { display: flex; gap: 8px; }
+
+/* Status messages */
+.status {
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.status.info { background: var(--bg-secondary); }
+.status.error { color: var(--danger); border: 1px solid var(--danger); }
+.status.empty { color: var(--text-secondary); }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: -1;
+}
+.modal {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  width: min(640px, calc(100% - 24px));
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.modal-title { margin: 0 0 8px; }
+.modal-actions { display: flex; justify-content: flex-end; }
+
+/* Theme toggle button */
 .theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
   background-color: var(--button-bg);
   color: var(--button-text);
   border: none;
   border-radius: 8px;
-  padding: 10px 20px;
+  padding: 10px 14px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+.theme-toggle:hover { opacity: .9; transform: translateY(-1px); }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .todo-row { grid-template-columns: 40px 1fr 120px 100px 100px 200px; }
 }
-
-.theme-toggle:active {
-  transform: translateY(0);
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
-  }
+@media (max-width: 700px) {
+  .kanban { grid-template-columns: 1fr; }
+  .todo-row { grid-template-columns: 32px 1fr 100px 90px 90px 160px; }
 }

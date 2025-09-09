@@ -1,82 +1,103 @@
-# Lightweight React Template for KAVIA
+# To-Do Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A lightweight React frontend for managing and organizing tasks. No routing and no third-party UI libraries; just React + fetch + Context API.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Create, edit, delete todos
+- Filters by status and search query
+- Sorting by title, priority, created, due date
+- Views: List and Kanban
+- Bulk actions: complete, incomplete, delete
+- Loading, error, and empty states
+- Accessible forms and dialogs
+- Dark/Light theme toggle
 
-## Getting Started
+## Architecture
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+```
+src/
+  components/        # Reusable UI components
+    BulkActionsBar.js
+    ConfirmModal.js
+    Filters.js
+    Header.js
+    KanbanBoard.js
+    Modal.js
+    SortControl.js
+    TodoForm.js
+    TodoList.js
+  features/
+    TodosPage.js     # Page container composing the app
+    useTodosPage.js  # Hook with UI logic
+  services/
+    api.js           # REST API calls (fetch)
+  state/
+    todosContext.js  # Context + reducer for state
+  config.js          # API base URL and helpers
+  App.js
+  App.css
+  index.js
 ```
 
-### Components
+### State Management
+- Global state with React Context + useReducer:
+  - items, loading, error
+  - filters { status, q }
+  - sort { field, direction }
+  - view 'list' | 'kanban'
+  - selectedIds Set
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+### API Layer
+- Uses fetch only. Endpoints expected:
+  - GET /todos?status=&q=&sort=&direction=
+  - POST /todos
+  - PATCH /todos/:id
+  - DELETE /todos/:id
+  - PATCH /todos/bulk (body: { ids, action })
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+## Configuration
 
-## Learn More
+Set the API base URL via environment variable at build time:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- REACT_APP_API_BASE_URL: Base URL for the backend API.
+  - Example: http://localhost:4000/api
 
-### Code Splitting
+You can create a .env.local (not committed) with:
+```
+REACT_APP_API_BASE_URL=http://localhost:4000/api
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Development
 
-### Analyzing the Bundle Size
+Install and start:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+npm install
+npm start
+```
 
-### Making a Progressive Web App
+Run tests:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+npm test
+```
 
-### Advanced Configuration
+Build:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+npm run build
+```
 
-### Deployment
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Start the backend at REACT_APP_API_BASE_URL (defaults to http://localhost:4000/api).
+2. Start the frontend (npm start).
+3. Add tasks with the “+ Add Task” button.
+4. Use filters, sorting, and view toggle. Select multiple rows to apply bulk actions.
 
-### `npm run build` fails to minify
+## Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- No router required; single-page experience.
+- Minimal CSS in App.css for clarity and quick customization.
+- All public functions are annotated with PUBLIC_INTERFACE comments.
